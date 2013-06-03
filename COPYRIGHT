@@ -1,0 +1,145 @@
+ 
+ NOTE:
+
+ Different parts of the project are licensed under different terms.
+ This is necessary to provide extra flexibility for usage of non-source
+ code files (images, media, etc.) outside of forks. Here are the
+ details.
+
+ 1] The "Coloring Book for Android" source code is copyrighted by me and
+    licensed under the GPL v2.0.
+
+ 2] The "Coloring Book for Android" logo is copyrighted by me. All
+    rights reserved.
+
+    Forks may contain the logo, but the logo may not be used outside of
+    the scope of forks (barring fair use).
+
+    The song "Deliberate Thought" is copyrighted by Kevin MacLeod
+    (incompetech.com) and licensed under the Creative Commons: By
+    Attribution 3.0 license.
+    http://creativecommons.org/licenses/by/3.0/
+
+ 3] All other images and any media (binary files that are not software
+    dependencies) not described in section 2 are licensed under the
+    Creative Commons: BY-SA Attribution 3.0 license.
+
+    http://creativecommons.org/licenses/by-sa/3.0/
+
+ 4] If you are not using the content described in section 3, you may
+    ignore this section.
+
+    Attribution specifications for the content described in section 3.
+
+    The following specifications are automatically satisfied in
+    repository forks which contain the supplied CREDITS file. Should you
+    choose to not use the supplied CREDITS file or should your usage of
+    the content fall outside the scope of forks (e.g., using an image on
+    a website), then you must follow all specifications listed below.
+
+    Attribution specifications:
+ 
+     a] You must visually indicate that the content was created by
+        "Byron Sanchez". A text credit is sufficient. If you make
+	      modifications to the work, then you must state that the original
+        work was created by "Byron Sanchez".
+
+     b] Link the text "Byron Sanchez" directly to the website:
+     
+        http://hackbytes.com
+
+	      A special exception to this applies to any form of distribution
+	      or publication in which a link is not technologically possible
+	      (e.g. a fork). If links are not technologically possible, simply
+	      place the url next to my name. Websites must actually use a
+	      standard HTML link.
+
+     c] The attribution must be visible. In the case of websites, it
+        must be visible even with JavaScript disabled. You may not use
+	      any form of redirection or obfuscation. Links must NOT be
+	      nofollowed.
+
+    SAMPLE: Image by Byron Sanchez
+ 
+    In the previous sample, the text "Byron Sanchez" would link to
+    http://hackbytes.com
+
+ You have my permission to make use of the source code (Coloring Book
+ for Android) under the terms of the GPL v2.0 as well as any special
+ exceptions I have made below.
+
+      Byron Sanchez
+
+----------------------------------------
+
+"Coloring Book for Android" source code is Copyright (c) 2013 by Byron
+Sanchez, licensed under the GNU GPL v2.0.
+
+"Coloring Book for Android" logo is Copyright (c) 2013 by Byron Sanchez.
+All rights reserved.
+
+"Deliberate Thought" is Copyright (c) by Kevin MacLeod
+(incompetech.com), licensed under the Creative Commons: By Attribution
+3.0 license.
+http://creativecommons.org/licenses/by/3.0/
+
+"Coloring Book for Android" images and any media (defined as binary
+files that are not software dependencies) are Copyright (c) 2013 Byron
+Sanchez, licensed under Creative Commons: BY-SA Attribution 3.0 unless
+otherwise noted.
+http://creativecommons.org/licenses/by-sa/3.0/
+
+This program is free software: you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the
+Free Software Foundation, version 2 of the License.
+
+This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+General Public License for more details.
+
+You should have received a copy of the GNU General Public License along 
+with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+Linking "Coloring Book for Android" statically or dynamically with other
+modules is making a combined work based on "Coloring Book for Android".
+Thus, the terms and conditions of the GNU General Public License cover
+the whole combination.
+
+In addition, as a special exception, the copyright holders of "Coloring
+Book for Android" give you permission to combine "Coloring Book for
+Android" with free software programs or libraries that are released
+under the GNU LGPL and with code included in the standard release of the
+following programs under the corresponding licenses (or modified
+versions of such code, with unchanged license):
+
+  Android Support v4 under the Apache 2.0 License
+  InAppBillingService under the Apache 2.0 License
+  Portions of ColorGFX.java under the Apache 2.0 License
+
+You may copy and distribute such a system following the terms of the GNU
+GPL for "Coloring Book for Android" and the licenses of the other code
+concerned.
+
+Note that people who make modified versions of "Coloring Book for
+Android" are not obligated to grant this special exception for their
+modified versions; it is their choice whether to do so. The GNU General
+Public License gives permission to release a modified version without
+this exception; this exception also makes it possible to release a
+modified version which carries forward this exception.
+
+"Coloring Book for Android" includes works under other copyright notices
+and distributed according to the terms of the GNU General Public License
+(unless given a special exception) or a compatible license, including:
+
+Java
+
+  Android Support v4 - Copyright (c) 2012 The Android Open Source Project
+
+  InAppBillingService - Copyright (c) 2012 The Android Open Source Project
+
+  Portions of ColorGFX.java - Copyright (c) 2007 The Android Open Source Project
+
+Music
+
+  Deliberate Thought - Copyright (c) 2007 Kevin MacLeod (incompetech.com) 

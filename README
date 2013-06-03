@@ -1,0 +1,63 @@
+        Coloring Book for Android v0.1 <http://hackbytes.com>
+
+This is the master repository of the "Coloring Book for Android" app.
+The submodule repositories can be found at the following locations:
+
+  http://github.com/byronsanchez/coloring-book-resources-android
+  http://github.com/byronsanchez/coloring-book-dependencies-android
+
+INSTRUCTIONS
+
+  Clone the coloring-book-android repository, or alternatively, clone
+  your fork of the coloring-book-android repository. Then add the
+  necessary submodules:
+
+    cd coloring-book-android
+    git submodule add https://github.com/byronsanchez/coloring-book-dependencies-android.git libs
+    git submodule add https://github.com/byronsanchez/coloring-book-resources-android.git res
+    git commit -m 'first commit with submodules'
+
+  Now you're all set to hack "Coloring Book for Android"!
+
+STRUCTURE
+
+  The repository tree structure.
+
+    /            - contains the entire "Coloring Book for Android"
+                   application.
+
+    assets/      - contains files that supplement application
+                   functionality (e.g., database schema file).
+
+    libs/        - contains the "Coloring Book for Android" dependencies
+                   submodule.
+
+    res/         - contains the "Coloring Book for Android" resources
+                   submodule. This submodule contains image and media
+                   assets used in the application.
+
+    src/         - contains the "Coloring Book for Android" source code.
+
+LICENSE
+  
+  "Coloring Book for Android" source code is Copyright (c) 2013 by
+  Byron Sanchez, licensed under the GNU GPL v2.0.
+  
+  "Coloring Book for Android" logo is Copyright (c) 2013 by Byron
+  Sanchez. All rights reserved.
+
+  "Deliberate Thought" by Kevin MacLeod (incompetech.com) 
+  Licensed under Creative Commons: By Attribution 3.0
+  http://creativecommons.org/licenses/by/3.0/
+  
+  "Coloring Book for Android" images and any media (defined as binary
+  files that are not software dependencies) are Copyright (c) 2013 Byron
+  Sanchez, licensed under Creative Commons: BY-SA Attribution 3.0 unless
+  otherwise noted.
+  http://creativecommons.org/licenses/by-sa/3.0/
+  Attribution specification is in the COPYRIGHT file.
+
+  ---
+  
+  Read the COPYRIGHT file carefully for the details of what this all
+  means.
