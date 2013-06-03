@@ -1,0 +1,6 @@
+[submodule "res"]
+	path = res
+	url = https://github.com/byronsanchez/coloring-book-resources-android.git
+[submodule "libs"]
+	path = libs
+	url = https://github.com/byronsanchez/coloring-book-dependencies-android
