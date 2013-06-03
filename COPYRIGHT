@@ -2,12 +2,12 @@
  NOTE:
 
  Different parts of the project are licensed under different terms.
- This is necessary to provide extra flexibility for usage of non-source
- code files (images, media, etc.) outside of forks. Here are the
- details.
+ Here are the details.
 
  1] The "Coloring Book for Android" source code is copyrighted by me and
     licensed under the GPL v2.0.
+    
+    MusicManager.java is copyrighted by Robert Green (www.rbgrn.net),
 
  2] The "Coloring Book for Android" logo is copyrighted by me. All
     rights reserved.
@@ -20,7 +20,7 @@
     Attribution 3.0 license.
     http://creativecommons.org/licenses/by/3.0/
 
- 3] All other images and any media (binary files that are not software
+ 3] All images and media (binary files that are not software
     dependencies) not described in section 2 are licensed under the
     Creative Commons: BY-SA Attribution 3.0 license.
 
@@ -49,15 +49,15 @@
         http://hackbytes.com
 
 	      A special exception to this applies to any form of distribution
-	      or publication in which a link is not technologically possible
-	      (e.g. a fork). If links are not technologically possible, simply
-	      place the url next to my name. Websites must actually use a
-	      standard HTML link.
+        or publication in which a link is not technologically possible
+        (e.g. a fork). If links are not technologically possible, simply
+        place the url next to my name. Websites must actually use a
+        standard HTML link.
 
      c] The attribution must be visible. In the case of websites, it
         must be visible even with JavaScript disabled. You may not use
 	      any form of redirection or obfuscation. Links must NOT be
-	      nofollowed.
+        nofollowed.
 
     SAMPLE: Image by Byron Sanchez
  
@@ -75,12 +75,13 @@
 "Coloring Book for Android" source code is Copyright (c) 2013 by Byron
 Sanchez, licensed under the GNU GPL v2.0.
 
+MusicManager.java is Copyright (c) 2009 by Robert Green (www.rbgrn.net).
+
 "Coloring Book for Android" logo is Copyright (c) 2013 by Byron Sanchez.
 All rights reserved.
 
-"Deliberate Thought" is Copyright (c) by Kevin MacLeod
-(incompetech.com), licensed under the Creative Commons: By Attribution
-3.0 license.
+"Deliberate Thought" is Copyright (c) 2007 by Kevin MacLeod
+(incompetech.com), licensed under Creative Commons: By Attribution 3.0.
 http://creativecommons.org/licenses/by/3.0/
 
 "Coloring Book for Android" images and any media (defined as binary
@@ -138,8 +139,6 @@ Java
 
   InAppBillingService - Copyright (c) 2012 The Android Open Source Project
 
+  MusicManager.java - Copyright (c) 2009 Robert Green (www.rbgrn.net)
+
   Portions of ColorGFX.java - Copyright (c) 2007 The Android Open Source Project
-
-Music
-
-  Deliberate Thought - Copyright (c) 2007 Kevin MacLeod (incompetech.com) 
