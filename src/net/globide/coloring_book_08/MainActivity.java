@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2013 Byron Sanchez
+/*/*
+ * Copyright (c) 2013 Byron Sanchez (hackbytes.com)
  * www.chompix.com
  *
  * This file is part of "Coloring Book for Android."

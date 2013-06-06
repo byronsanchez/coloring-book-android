@@ -4,7 +4,7 @@
  * www.rbgrn.net
  * www.batterypoweredgames.com
  * 
- * Modified by Byron Sanchez.
+ * Modified by Byron Sanchez (hackbytes.com)
  */
 
 package net.globide.coloring_book_08;
