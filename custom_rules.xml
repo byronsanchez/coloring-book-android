@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="coloring-book-android-custom-rules" default="help">
+
+    <!--
+        This build file is imported by the project build file.
+
+        At the beginning of the file is a list of properties that can be overridden
+        by adding them to your ant.properties (properties are immutable, so their
+        first definition sticks and is never changed).
+
+        Follows:
+        - overridable properties
+    -->
+
+    <!-- ******************************************************* -->
+    <!-- **************** Overridable Properties *************** -->
+    <!-- ******************************************************* -->
+
+    <!-- You can override these values in your build.xml or ant.properties.
+         Overriding any other properties may result in broken build. -->
+
+    <!-- Tells adb which device to target. You can change this from the command line
+         by invoking "ant -Dadb.device.arg=-d" for device "ant -Dadb.device.arg=-e" for
+         the emulator. -->
+    <property name="adb.device.arg" value="" />
+
+    <!-- fileset exclude patterns (space separated) to prevent
+         files inside src/ from being packaged. -->
+    <property name="android.package.excludes" value="" />
+
+    <!-- set some properties used for filtering/override. If those weren't defined
+         before, then this will create them with empty values, which are then ignored
+         by the custom tasks receiving them. -->
+    <property name="version.code" value="" />
+    <property name="version.name" value="" />
+    <property name="aapt.resource.filter" value="" />
+    <!-- 'aapt.ignore.assets' is the list of file patterns to ignore under /res and /assets.
+         Default is "!.svn:!.git:.*:<dir>_*:!CVS:!thumbs.db:!picasa.ini:!*.scc:*~"
+
+         Overall patterns syntax is:
+           [!][<dir>|<file>][*suffix-match|prefix-match*|full-match]:more:patterns...
+
+         - The first character flag ! avoids printing a warning.
+         - Pattern can have the flag "<dir>" to match only directories
+           or "<file>" to match only files. Default is to match both.
+         - Match is not case-sensitive.
+    -->
+    <property name="aapt.ignore.assets" value="!.svn:!.git:.*:&lt;dir&gt;_*:&lt;file&gt;_*:!CVS:!thumbs.db:!picasa.ini:!*.scc:*~:COPYING:README" />
+
+    <!-- dex force jumbo options, to be used when dex merging fails with
+         UNEXPECTED TOP-LEVEL EXCEPTION: com.android.dx.util.DexException: Cannot handle conversion to jumbo index!
+           at com.android.dx.merge.InstructionTransformer.jumboCheck(InstructionTransformer.java:103)
+           ...
+    -->
+    <property name="dex.force.jumbo" value="false" />
+    <property name="dex.disable.merger" value="false" />
+
+    <!-- compilation options -->
+    <property name="java.encoding" value="UTF-8" />
+    <property name="java.target" value="1.5" />
+    <property name="java.source" value="1.5" />
+    <property name="java.compilerargs" value="" />
+    <property name="java.compiler.classpath" value="" />
+
+    <!-- Renderscript options -->
+    <property name="renderscript.debug.opt.level" value="O0" />
+    <property name="renderscript.release.opt.level" value="O3" />
+
+    <!-- manifest merger default value -->
+    <property name="manifestmerger.enabled" value="false" />
+
+    <!-- instrumentation options -->
+    <property name="emma.filter" value="" />
+
+    <!-- Verbosity -->
+    <property name="verbose" value="false" />
+
+    <!-- Output location of the HTML report for the "lint" target.
+         Ideally this would be specified as
+            value="${out.dir}/lint-results.html"
+         but we can't make a forward reference to the definition for
+         ${out.dir}, and it is not a configurable property (yet).
+     -->
+    <property name="lint.out.html" value="bin/lint-results.html" />
+
+    <!-- Output location of the XML report for the "lint" target -->
+    <property name="lint.out.xml" value="bin/lint-results.xml" />
+
+</project>
