@@ -45,7 +45,7 @@
            or "<file>" to match only files. Default is to match both.
          - Match is not case-sensitive.
     -->
-    <property name="aapt.ignore.assets" value="!.svn:!.git:.*:&lt;dir&gt;_*:&lt;file&gt;_*:!CVS:!thumbs.db:!picasa.ini:!*.scc:*~:COPYING:README" />
+    <property name="aapt.ignore.assets" value="!.svn:!.git:.*:&lt;dir&gt;_*:&lt;file&gt;_*:!CVS:!thumbs.db:!picasa.ini:!*.scc:*~:COPYING:README:LICENSES" />
 
     <!-- dex force jumbo options, to be used when dex merging fails with
          UNEXPECTED TOP-LEVEL EXCEPTION: com.android.dx.util.DexException: Cannot handle conversion to jumbo index!
