@@ -188,8 +188,9 @@ public class ShopActivity extends Activity implements OnClickListener {
          * want to make it easy for an attacker to replace the public key with
          * one of their own and then fake messages from the server.
          */
-        // TODO: Construct the key at runtime. Implement one of the techniques
-        // described in the preceeding comment.
+        String base64EncodedPublicKey = getKey();
+
+        // TODO: Implement the preceeding comment in some way.
 
         // Create the helper, passing it our context and the public key to
         // verify signatures with

@@ -1,0 +1,15 @@
+build.sh
+
+  This script is meant to be executed only once, right after a git clone
+  (of the master AND submodule repositories). Run this script from
+  the root of the project directory.
+  
+  It will customize the repository so that the application can compile
+  properly, using your own IDs for various components. If you do not set
+  up these components (either by running this script or through manual
+  configuration of the necessary files), the application will NOT
+  run properly. It may not even compile.
+  
+  To setup the necessary config variables, open build.sh in a text editor
+  and only modify the CONFIGURATION section. Do not modify $PROJECT_DIR,
+  unless you are moving the build.sh file.
