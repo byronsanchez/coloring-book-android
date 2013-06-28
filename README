@@ -1,4 +1,4 @@
-        Coloring Book for Android v0.1 <http://hackbytes.com>
+        Coloring Book for Android v1.0 <http://chompix.com>
 
 This is the master repository of the "Coloring Book for Android" app.
 The submodule repositories can be found at the following locations:
@@ -9,15 +9,25 @@ The submodule repositories can be found at the following locations:
 INSTRUCTIONS
 
   Clone the coloring-book-android repository, or alternatively, clone
-  your fork of the coloring-book-android repository. Then add the
-  necessary submodules:
+  your fork of the coloring-book-android repository, along with its
+  submodules.
 
+  For git version 1.6.5 or higher, run:
+  
+    git clone --recursive https://github.com/byronsanchez/coloring-book-android.git
     cd coloring-book-android
-    git submodule add https://github.com/byronsanchez/coloring-book-dependencies-android.git libs
-    git submodule add https://github.com/byronsanchez/coloring-book-resources-android.git res
-    git commit -m 'first commit with submodules'
+    assets/_scripts/build.sh all
+  
+  For other versions of git, run:
+  
+    https://github.com/byronsanchez/coloring-book-android.git
+    cd coloring-book-android
+    git submodule update --init
+    assets/_scripts/build.sh all
 
-  Now you're all set to hack "Coloring Book for Android"!
+  Follow the instructions in the build script carefully. Once you are
+  done with the build script, you will be all set to hack "Coloring
+  Book for Android"!
 
 STRUCTURE
 
@@ -45,6 +55,9 @@ LICENSE
 
   MusicManager.java is Copyright (c) 2009 by Robert Green
   (www.rbgrn.net).
+  
+  Chompix logo is Copyright (c) 2013 by Byron Sanchez (hackbytes.com).
+  All rights reserved.
 
   "Coloring Book for Android" logo is Copyright (c) 2013 by Byron
   Sanchez (hackbytes.com). All rights reserved.
@@ -64,3 +77,27 @@ LICENSE
   
   Read the COPYRIGHT file carefully for the details of what this all
   means.
+  
+  In short:
+  
+    - You may not use the following content for any reason without my
+      explicit permission:
+    
+      * The Chompix logo
+    
+      * The Coloring Book logo
+      
+    - You can use anything else, so long as you follow the licensing
+      requirements for the content you are using. This is all detailed
+      in the COPYRIGHT file.
+      
+  Running the following script from the root of the project directory
+  will remove the non-licensed, restricted content listed above:
+  
+    assets/_scripts/nuke.sh all
+    
+  To view the list of what will be removed, so you can replace them
+  with your own assets. run:
+  
+    assets/_scripts/nuke.sh list
+      
