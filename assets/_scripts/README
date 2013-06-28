@@ -1,3 +1,5 @@
+All scripts must be run from the root of the project directory.
+
 build.sh
 
   This script is meant to be executed only once, right after a git clone
@@ -13,3 +15,26 @@ build.sh
   To setup the necessary config variables, open build.sh in a text editor
   and only modify the CONFIGURATION section. Do not modify $PROJECT_DIR,
   unless you are moving the build.sh file.
+
+  When you are ready, run the build script:
+
+    assets/_scripts/build.sh all
+
+nuke.sh
+
+  This script is meant to be executed in order to comply with the
+  licenses of the project. Information can be found in the COPYRIGHT
+  and README files located in the root of the project directory. In
+  short, by running the nuke script, you will remove all copyrighted
+  materials under which no license of use has been provided. Be careful.
+  This may break functionality, so do this when you have replacement
+  assets.
+ 
+  To print a list of files to be nuked without actually nuking them,
+  run:
+
+    assets/_scripts/nuke.sh list
+
+  To nuke the files, run:
+
+    assets/_scripts/nuke.sh all
