@@ -1,0 +1,4 @@
+-- Baseline schema.
+
+CREATE TABLE categories (_id integer primary key, category TEXT, description TEXT, isAvailable integer, sku TEXT NOT NULL UNIQUE);
+CREATE TABLE "node" ("_id" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , "cid" INTEGER, "title" TEXT, "body" TEXT, FOREIGN KEY(cid) REFERENCES categories(_id));

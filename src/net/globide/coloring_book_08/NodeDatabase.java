@@ -21,16 +21,23 @@
 
 package net.globide.coloring_book_08;
 
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -50,6 +57,7 @@ public class NodeDatabase extends SQLiteOpenHelper {
     // Define the tables used in the application.
     private static final String DATABASE_TABLE_NODE = "node";
     private static final String DATABASE_TABLE_CATEGORIES = "categories";
+    private static final String DATABASE_TABLE_SCHEMA = "schema";
 
     // Define the "node" table SQLite columns
     private static final String KEY_NODE_ROWID = "_id";
@@ -64,8 +72,16 @@ public class NodeDatabase extends SQLiteOpenHelper {
     private static final String KEY_CATEGORIES_ISAVAILABLE = "isAvailable";
     private static final String KEY_CATEGORIES_SKU = "sku";
 
+    // Define the "schema" table SQLite columns
+    private static final String KEY_SCHEMA_ROWID = "_id";
+    private static final String KEY_SCHEMA_MAJOR_RELEASE_NUMBER = "major_release_number";
+    private static final String KEY_SCHEMA_MINOR_RELEASE_NUMBER = "minor_release_number";
+    private static final String KEY_SCHEMA_POINT_RELEASE_NUMBER = "point_release_number";
+    private static final String KEY_SCHEMA_SCRIPT_NAME = "script_name";
+    private static final String KEY_SCHEMA_DATE_APPLIED = "date_applied";
+
     // Define the current schema version.
-    private static final int SCHEMA_VERSION = 1;
+    private static final int SCHEMA_VERSION = 2;
 
     // Define the context and the actual database property.
     private final Context mOurContext;
@@ -94,23 +110,20 @@ public class NodeDatabase extends SQLiteOpenHelper {
      */
     private void createDB() {
         // Check to see if the database exists. (Typically, on first run, it
-        // should
-        // not exist yet).
+        // should not exist yet).
         boolean dbExist = DBExists();
 
         // If a database does not exist, create one.
         if (!dbExist) {
             // Create an empty database in the default system location.
-            mOurDatabase = getReadableDatabase();
+            mOurDatabase = getWritableDatabase();
 
-            // Copy our pre-populated database in /assets/ to the emty database
-            // we
-            // just created.
-            copyDBFromResource();
+            // Run all available changescripts.
+            runUpdates("0000");
         }
         else {
             // If the database exists, just call it for use.
-            mOurDatabase = getReadableDatabase();
+            mOurDatabase = getWritableDatabase();
         }
     }
 
@@ -118,101 +131,141 @@ public class NodeDatabase extends SQLiteOpenHelper {
      * Checks to see if a database file exists in the default system location.
      */
     private boolean DBExists() {
-        // Create a local database accessor variable for our check.
-        SQLiteDatabase db = null;
-
-        try {
-            // Define a string containing the default system database file path
-            // for
-            // our application's database.
-            String databasePath = DATABASE_PATH + DATABASE_NAME;
-            // Open the database.
-            db = SQLiteDatabase.openDatabase(databasePath, null,
-                    SQLiteDatabase.OPEN_READWRITE);
-            // Set the database locale.
-            db.setLocale(Locale.getDefault());
-            // Set the database version.
-            db.setVersion(SCHEMA_VERSION);
-        } catch (SQLiteException e) {
-            // DO NOT HANDLE THIS ERROR.
-
-            // This catch block is used as part of a boolean check. If the
-            // database does NOT exist, db will be null and a database will be
-            // created from the assets folder.
-        }
-
-        // If the database is not null.
-        if (db != null) {
-            // Close this local connection. We know it exists now...
-            db.close();
-        }
-
-        // If db is not null, database exists, return true.
-        // Else, db does NOT exist, return false.
-        return db != null ? true : false;
+        File dbFile = mOurContext.getDatabasePath(DATABASE_NAME);
+        return dbFile.exists();
     }
 
     /**
-     * Copies our pre-populated database to the default system database location
-     * for our application.
+     * Runs updates from the specified script ID and all subsequent available
+     * updates.
      */
-    private void copyDBFromResource() {
-        // Define the I/O streams.
-        InputStream inputStream = null;
-        OutputStream outputStream = null;
-        // Define the default system location for our application's database.
-        String dbFilePath = DATABASE_PATH + DATABASE_NAME;
+    private void runUpdates( String recentScriptID ) {
+      // Signal a fresh install if the database is being created from scratch.
+        boolean isFreshInstall = false;
+        if (recentScriptID.equals("0000")) {
+            isFreshInstall = true;
+        }
 
+        // Get a list of all database scripts from the assets directory.
+        String[] fileList = null;
         try {
-            // Based on the context, get it's assets and open the pre-populated
-            // database file.
-            inputStream = mOurContext.getAssets().open(DATABASE_NAME);
-            // Define an output stream set to the default system location for
-            // our
-            // application's database file.
-            outputStream = new FileOutputStream(dbFilePath);
+            fileList = mOurContext.getAssets().list("database");
+        } catch ( IOException ioe ) {
+            fileList = new String[] {};
+        }
 
-            // Define a byte buffer in chunks of 1024 bytes.
-            byte[] buffer = new byte[1024];
-            // Integer variable to use in our file looper.
-            int length;
+        for (int i = 0; i < fileList.length; i++) {
+            String fileString = fileList[i];
+            String scriptIDString = extractStringFromScript( fileString, "point_release_number" );
 
-            // While the length of the buffer is greater than 0 (there is
-            // still more to read)...
-            while ((length = inputStream.read(buffer)) > 0) {
-                // Write the next chunk from the buffer to the output stream.
-                outputStream.write(buffer, 0, length);
+            // If the current iteration scriptID is less than the most recently
+            // applied update, skip to the next iteration.
+            // Ignore this check for fresh installs, as all scripts will run in
+            // in that case.
+            if (!isFreshInstall && scriptIDString.compareTo(recentScriptID) <= 0) {
+              continue;
+            }
+            applyScript( fileString );
+
+            // This is what happens when you don't think ahead. Now we have to
+            // skip logging directly to the database for the first 3
+            // changescripts, because the schema table is first introduced in
+            // the third changescript. The third changescript also
+            // retroactively logs all previous change scripts.
+            if (scriptIDString.compareTo("0003") <= 0) {
+              continue;
             }
 
-            // Flush and close the I/O strams.
-            outputStream.flush();
-            outputStream.close();
-            inputStream.close();
-        } catch (FileNotFoundException fileNotFoundException) {
+            // Update the Schema Change Log.
 
-            // The system database storage location does not exist! Crash the
-            // application.
-            throw new RuntimeException(
-                    "Failed to load default database storage location.");
+            // Prepare the data to insert.
+            String major_release_number = extractStringFromScript( fileString, "major_release_number" );
+            String minor_release_number = extractStringFromScript( fileString, "minor_release_number" );
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date now = new Date();
+            String date_applied = sdf.format(now);
+            
+            // Create the new values
+            ContentValues cv;
+            cv = new ContentValues();
+            cv.put(KEY_SCHEMA_MAJOR_RELEASE_NUMBER, major_release_number);
+            cv.put(KEY_SCHEMA_MINOR_RELEASE_NUMBER, minor_release_number);
+            cv.put(KEY_SCHEMA_POINT_RELEASE_NUMBER, scriptIDString);
+            cv.put(KEY_SCHEMA_SCRIPT_NAME, fileString);
+            cv.put(KEY_SCHEMA_DATE_APPLIED, date_applied);
 
-        } catch (IOException ioException) {
+            // Execute a simple update query using the nid as the WHERE clause
+            mOurDatabase.insert(DATABASE_TABLE_SCHEMA, null, cv);
+        }
+    }
 
-            // The database file does not exist! This is a critical error as
-            // there are no stories to load and therefore no content! Crash the
-            // application.
-            throw new RuntimeException(
-                    "Failed to copy database from assets.");
+    /**
+     * Applies a change-script to the database.
+     */
+    private void applyScript( String script ) {
+        String[] items = null;
+        try {
+            BufferedReader reader = new BufferedReader( new InputStreamReader( mOurContext.getAssets().open( "database/" + script, AssetManager.ACCESS_STREAMING ) ) );
 
-        } finally {
-            try {
-                outputStream.close();
-                inputStream.close();
-            } catch (IOException ioException) {
-                // If for some reason, closing the streams fails...
-                throw new RuntimeException(
-                        "Failed to load default database storage location.");
+            StringBuffer sql = new StringBuffer();
+            String line = null;
+            while ( ( line = reader.readLine() ) != null ) {
+                sql.append( line );
+                sql.append( "\n" );
+            }
+            // split the ddl file by semi-colons anchored to the end of line.
+            Pattern myPattern = Pattern.compile(";$", Pattern.MULTILINE);
+            items = myPattern.split(sql.toString());
+        } catch ( IOException ioe ) {
+            items = new String[] {};
+        }
+
+        int size = items.length;
+
+        for ( String item : items ) {
+            if ( item.trim().length() != 0 ) {
+                mOurDatabase.execSQL( item + ";" );
             }
         }
+    }
+
+    /**
+     * Extracts the specified portion of the script file name.
+     */
+    private String extractStringFromScript(String scriptFileName, String scriptMeta) {
+        // Split accepts regular expressions, so if it is "acting weird"
+        // that's probably it.
+        String[] parts = scriptFileName.split("\\.");
+
+        if (scriptMeta.equals("major_release_number")) {
+          return parts[1];
+        }
+        else if (scriptMeta.equals("minor_release_number")) {
+          return parts[2];
+        }
+        else if (scriptMeta.equals("point_release_number")) {
+          return parts[3];
+        }
+        else {
+          return "";
+        }
+    }
+
+    /**
+     * Returns whether or not a table exists in the database.
+     */
+    public boolean doesTableExist(String tableName) {
+
+        Cursor cursor = mOurDatabase.rawQuery("select DISTINCT tbl_name from sqlite_master where tbl_name = '"+tableName+"'", null);
+        if (cursor != null) {
+            if (cursor.getCount() > 0) {
+                cursor.close();
+                return true;
+            }
+            cursor.close();
+        }
+
+        return false;
     }
 
     /**
@@ -535,9 +588,49 @@ public class NodeDatabase extends SQLiteOpenHelper {
 
     /**
      * Implements onUpgrade().
+     * 
+     * Typically used to upgrade the database
+     * table. Not necessary in this application.
      */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        // We are starting transactions directly from the DDL files, so the
+        // default transaction is unnecessary here. This way, all DDL files
+        // are consistent, even outside the scope of Java code.
+        db.endTransaction();
+        mOurDatabase = db;
+        boolean tableExists = doesTableExist("schema");
+        if (!tableExists) {
+            // most recent script == sc.01.00.0002
+            runUpdates( "0002" );
+        }
+        else {
+            // Define an array of columns to SELECT.
+            String[] columns = new String[] {
+                    KEY_SCHEMA_ROWID, KEY_SCHEMA_MAJOR_RELEASE_NUMBER,
+                    KEY_SCHEMA_MINOR_RELEASE_NUMBER, KEY_SCHEMA_POINT_RELEASE_NUMBER,
+                    KEY_SCHEMA_SCRIPT_NAME, KEY_SCHEMA_DATE_APPLIED
+            };
 
+            // Define the cursor to contain our query results, and execute the
+            // query.
+            Cursor c = mOurDatabase.query(DATABASE_TABLE_SCHEMA, columns, null, null, null, null, KEY_SCHEMA_SCRIPT_NAME + " DESC", "1");
+
+            // If there is a result...
+            if (c != null) {
+                // Position the iterator to the start of the result set.
+                c.moveToFirst();
+                String recentScriptID = extractStringFromScript( c.getString(4), "point_release_number" );
+                // Close the cursor.
+                c.close();
+
+                runUpdates( recentScriptID );
+            }
+        }
+        // The API is going to try and close a transaction, so let's start one
+        // to prevent errors. I know this is hacky, but at least we now get
+        // consistent DDL files.
+        db.beginTransaction();
+        mOurDatabase = null;
     }
 }

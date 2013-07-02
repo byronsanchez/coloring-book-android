@@ -1,0 +1,8 @@
+-- Population of the schema table.
+
+PRAGMA foreign_keys=OFF;
+BEGIN TRANSACTION;
+INSERT INTO schema VALUES(1,'01','00','0001','sc.01.00.0001',datetime('now', 'localtime'));
+INSERT INTO schema VALUES(2,'01','00','0002','sc.01.00.0002',datetime('now', 'localtime'));
+INSERT INTO schema VALUES(3,'01','01','0003','sc.01.01.0003',datetime('now', 'localtime'));
+COMMIT;

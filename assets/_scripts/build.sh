@@ -73,12 +73,6 @@ function prepare_ShopActivity {
   sed_file "$target" "$sub_string"
 }
 
-function build_database {
-  target_db="$PROJECT_DIR/assets/coloring_book.db"
-  target_ddl="$PROJECT_DIR/assets/coloring-book.sql"
-  sqlite3 $target_db < $target_ddl
-}
-
 function update_android_project {
   android update project --path $PROJECT_DIR
 }
@@ -107,7 +101,6 @@ all)
   validate_user
   check_sanity
   prepare_ShopActivity
-  build_database
   update_android_project
   message="Build complete!"
   printf "\e[32m$message\e[0m\n"

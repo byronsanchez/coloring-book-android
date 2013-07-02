@@ -1,6 +1,7 @@
+-- Initial population of all tables.
+
 PRAGMA foreign_keys=OFF;
 BEGIN TRANSACTION;
-CREATE TABLE "node" ("_id" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , "cid" INTEGER, "title" TEXT, "body" TEXT, FOREIGN KEY(cid) REFERENCES categories(_id));
 INSERT INTO node VALUES(1,1,'Sailboat','coloring_book_1_image_1');
 INSERT INTO node VALUES(2,1,'Trumpet','coloring_book_1_image_2');
 INSERT INTO node VALUES(3,1,'Fruits','coloring_book_1_image_3');
@@ -21,9 +22,6 @@ INSERT INTO node VALUES(17,2,'Pig','coloring_book_2_image_7');
 INSERT INTO node VALUES(18,2,'Goat','coloring_book_2_image_8');
 INSERT INTO node VALUES(19,2,'Chicken','coloring_book_2_image_9');
 INSERT INTO node VALUES(20,2,'Horse','coloring_book_2_image_10');
-CREATE TABLE categories (_id integer primary key, category TEXT, description TEXT, isAvailable integer, sku TEXT NOT NULL UNIQUE);
 INSERT INTO categories VALUES(1,'Coloring Book','Lot of different fun pictures to color!',1,'000_default');
 INSERT INTO categories VALUES(2,'Farm Animals','Different farm animals to play with!',0,'001_farm_animals_pack');
-DELETE FROM sqlite_sequence;
-INSERT INTO "sqlite_sequence" VALUES('node',20);
 COMMIT;
