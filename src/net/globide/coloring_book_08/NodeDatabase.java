@@ -220,8 +220,6 @@ public class NodeDatabase extends SQLiteOpenHelper {
             items = new String[] {};
         }
 
-        int size = items.length;
-
         for ( String item : items ) {
             if ( item.trim().length() != 0 ) {
                 mOurDatabase.execSQL( item + ";" );
