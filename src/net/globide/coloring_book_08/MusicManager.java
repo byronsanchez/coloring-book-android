@@ -69,10 +69,13 @@ public class MusicManager {
 
     /**
      * Sets the preferences for this static class. This MUST be set before
-     * MusicManager can be used.
+     * MusicManager can be used. If the preferences have already been set,
+     * nothing happens.
      */
     public static void setPreferences(SharedPreferences sp) {
+      if (sSharedPreferences == null) {
         sSharedPreferences = sp;
+      }
     }
 
     /**

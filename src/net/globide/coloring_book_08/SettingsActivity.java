@@ -111,6 +111,10 @@ public class SettingsActivity extends Activity implements OnClickListener {
         // This is needed for the initial loading of this view. In manual
         // selections, it's redundant.
         mTbSettingsMusic.setChecked(tbSettingsMusicIsChecked);
+       
+        // Set the preferences (needs to be called in case preferences
+        // are null).
+        MusicManager.setPreferences(mSharedPreferences); 
 
         // Update actual status
         MusicManager.updateVolume();
