@@ -764,14 +764,11 @@ public class ColorGFX extends SurfaceView implements Runnable {
             int target = targetColor;
             int replacement = replacementColor;
 
-            // If the selected color is not equal to the replacement color...
             // Start the flood fill algorithm.
             if (target != replacement) {
                 // Set the empty queue and run the algorithm at least once (or
                 // alternatively, set the point to the end of queue and run a
-                // while
-                // loop
-                // that performs this algorithm so long as the Queue is not
+                // while loop that performs this algorithm so long as the Queue is not
                 // empty).
                 Queue<Point> queue = new LinkedList<Point>();
 
@@ -787,32 +784,23 @@ public class ColorGFX extends SurfaceView implements Runnable {
                     int y = node.y;
 
                     // while x is not at the origin AND the color of it's West
-                    // neighboring
-                    // pixel is changeable.
+                    // neighboring pixel is changeable.
                     while (x > 0 && picture.getPixel(x - 1, y) == target) {
                         // Continuously decrement x (AKA bring x as far to the
-                        // west
-                        // as
-                        // possible given the color constraints).
+                        // west as possible given the color constraints).
                         x--;
                     }
 
                     // Given the above while loop, we are now as far West as we
-                    // can
-                    // be and
-                    // are currently at a pixel we will need to replace.
+                    // can be and are currently at a pixel we will need to replace.
 
                     // Set directional booleans.
                     boolean spanUp = false;
                     boolean spanDown = false;
 
                     // While x has not reached as far East as it can in the
-                    // bitmap
-                    // (AKA
-                    // hasn't hit the end of the image and hasn't reached a
-                    // color
-                    // different
-                    // than the replacement color)...
+                    // bitmap (AKA hasn't hit the end of the image and hasn't
+                    // reached a color different than the replacement color)...
                     while (x < width && picture.getPixel(x, y) == target) {
 
                         // Replace the current pixel color.
@@ -820,10 +808,10 @@ public class ColorGFX extends SurfaceView implements Runnable {
                         // Add the pixel to the flood fill list.
                         list.add(new Point(x, y));
 
-                        // If any of the surrounding pixel's are black, add it
-                        // to
-                        // the stroke
-                        // list.
+                        // If we don't take the stroke paths into consideration
+                        // and color them where necessary, we WILL have reduced
+                        // aliasing, but not perfect anti-aliasing. By coloring
+                        // the paths, we have virtually ZERO aliasing.
 
                         // TOP
 
@@ -847,36 +835,28 @@ public class ColorGFX extends SurfaceView implements Runnable {
                         }
 
                         // Add one SOUTH point to the queue if it is replaceable
-                        // (this will
-                        // be the next relative point to check from) and we have
-                        // not
-                        // previously moved down.
+                        // (this will be the next relative point to check from)
+                        // and we have not previously moved down.
                         if (!spanUp && y > 0 && picture.getPixel(x, y - 1) == target) {
                             queue.add(new Point(x, y - 1));
                             spanUp = true;
                         }
                         // If the SOUTH point is unreplaceable or we have
-                        // previously
-                        // moved up
-                        // set the boolean to false.
+                        // previously moved up set the boolean to false.
                         else if (spanUp && y > 0 && picture.getPixel(x, y - 1) != target) {
                             spanUp = false;
                         }
 
                         // Add one NORTH point to the queue if it is replaceable
-                        // (this will
-                        // be the next relative point to check from) and we have
-                        // not
-                        // previously moved up.
+                        // (this will be the next relative point to check from)
+                        // and we have not previously moved up.
                         if (!spanDown && y < height - 1
                                 && picture.getPixel(x, y + 1) == target) {
                             queue.add(new Point(x, y + 1));
                             spanDown = true;
                         }
                         // If the NORTH point is unreplaceable or we have
-                        // previously
-                        // moved up
-                        // set the boolean to false.
+                        // previously moved up set the boolean to false.
                         else if (spanDown && y < height - 1
                                 && picture.getPixel(x, y + 1) != target) {
                             spanDown = false;
@@ -892,8 +872,7 @@ public class ColorGFX extends SurfaceView implements Runnable {
             }
 
             // Once the Flood Fill Algorithm has completed, turn the action flag
-            // off.
-            // We're done.
+            // off. We're done.
             isFillEnabled = false;
         }
     }
