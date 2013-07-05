@@ -48,7 +48,6 @@
 package net.globide.coloring_book_08;
 
 import java.util.Arrays;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -103,7 +102,6 @@ public class ColorGFX extends SurfaceView implements Runnable {
     // Set the SurfaceView Thread properties.
     private SurfaceHolder mOurHolder;
     private Thread mOurThread = null;
-    private boolean mIsRunning = false;
 
     // Image metrics
     public int imageWidth;
@@ -221,29 +219,14 @@ public class ColorGFX extends SurfaceView implements Runnable {
             isThreadBroken = true;
         }
 
-        mIsRunning = false;
-        boolean retry = true;
-        while (retry) {
-            try {
-                mOurThread.join();
-                retry = false;
-
-            } catch (InterruptedException e) {
-                // Allow thread to exit.
-
-                // This code will loop until the thread has exited, so there is
-                // no need to handle this exception.
-            }
-            // break;
-        }
-        mOurThread = null;
+        // Kill the main canvas thread.
+        mOurThread.interrupt();
     }
 
     /**
      * Resumes a paused thread. This is called as soon as the view is created.
      */
     public void resume() {
-        mIsRunning = true;
         // If a bitmap has been restored from a saved state, don't create a new
         // bitmap.
         if (bitmap == null && !isSavedData) {
@@ -260,7 +243,7 @@ public class ColorGFX extends SurfaceView implements Runnable {
     public void run() {
 
         // While the thread is not paused...
-        while (mIsRunning) {
+        while ( !mOurThread.isInterrupted() ) {
 
             // If we don't have access to the surface (as another application is
             // currently using it), don't do anything until we have access.
@@ -311,6 +294,10 @@ public class ColorGFX extends SurfaceView implements Runnable {
 
             // Once we are done, unlock the canvas and update the display.
             mOurHolder.unlockCanvasAndPost(canvas);
+        }
+
+        if (mOurThread.isInterrupted()) {
+          mOurThread = null;
         }
     }
 
@@ -664,10 +651,6 @@ public class ColorGFX extends SurfaceView implements Runnable {
         public int target;
         public int replacementColor;
         public Bitmap image;
-
-        // Define an empty list of points to floodfill.
-        //ArrayList<Point> list = new ArrayList<Point>();
-        //ArrayList<Point> strokeList = new ArrayList<Point>();
 
         // Define the array primitives. This is faster and will ultimately use
         // less memory than array lists that can dynamically allocate memory.
