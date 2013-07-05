@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="net.globide.coloring_book_08"
-    android:versionCode="4"
-    android:versionName="1.0"
-    android:installLocation="auto" >
+    android:versionCode="5"
+    android:versionName="1.1.0"
+    android:installLocation="preferExternal" >
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -107,4 +107,5 @@
         </activity>
     </application>
 
-</manifest>
+  </manifest>
+
