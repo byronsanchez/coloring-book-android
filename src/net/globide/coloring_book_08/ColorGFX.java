@@ -47,6 +47,7 @@
 
 package net.globide.coloring_book_08;
 
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -149,9 +150,9 @@ public class ColorGFX extends SurfaceView implements Runnable {
     public boolean isSavedData;
 
     // A list of points to floodfill whenever this tool is used.
-    private ArrayList<Point> mFloodfillList = new ArrayList<Point>();
+    private boolean[][] mFloodfillList;
     // A list of points to floodfill whenever this tool is used.
-    private ArrayList<Point> mStrokefillList = new ArrayList<Point>();
+    private boolean[][] mStrokefillList;
 
     private Context mContext;
 
@@ -621,12 +622,13 @@ public class ColorGFX extends SurfaceView implements Runnable {
      * Colors all anti-aliasing pixels for a smooth fill.
      */
     public void colorStrokes(Bitmap picture, int replacementColor) {
-        for (int i = 0; i < mStrokefillList.size(); i++) {
-            // Get this iteration's Point object.
-            Point pixel = mStrokefillList.get(i);
-
-            // Color the current pixel with the selected color.
-            picture.setPixel(pixel.x, pixel.y, replacementColor);
+        for (int i=0; i < mStrokefillList.length; i++) {
+            for (int j=0; j < mStrokefillList[i].length; j++) {
+                if (mStrokefillList[i][j] != false) {
+                    // Color the current pixel with the selected color.
+                    picture.setPixel(i, j, replacementColor);
+                }
+            }
         }
     }
 
@@ -634,13 +636,13 @@ public class ColorGFX extends SurfaceView implements Runnable {
      * Colors all pixels from the flood fill algorithm.
      */
     public void colorPixels(Bitmap picture, int replacementColor) {
-
-        for (int i = 0; i < mFloodfillList.size(); i++) {
-            // Get this iteration's Point object.
-            Point pixel = mFloodfillList.get(i);
-
-            // Color the current pixel with the selected color.
-            picture.setPixel(pixel.x, pixel.y, replacementColor);
+        for (int i=0; i < mFloodfillList.length; i++) {
+            for (int j=0; j < mFloodfillList[i].length; j++) {
+                if (mFloodfillList[i][j] != false) {
+                    // Color the current pixel with the selected color.
+                    picture.setPixel(i, j, replacementColor);
+                }
+            }
         }
     }
 
@@ -648,8 +650,8 @@ public class ColorGFX extends SurfaceView implements Runnable {
      * Clears the stroke and floodfill pixel lists.
      */
     public void clearPixelLists() {
-        mStrokefillList.clear();
-        mFloodfillList.clear();
+        mStrokefillList = null;
+        mFloodfillList = null;
     }
 
     /**
@@ -664,8 +666,13 @@ public class ColorGFX extends SurfaceView implements Runnable {
         public Bitmap image;
 
         // Define an empty list of points to floodfill.
-        ArrayList<Point> list = new ArrayList<Point>();
-        ArrayList<Point> strokeList = new ArrayList<Point>();
+        //ArrayList<Point> list = new ArrayList<Point>();
+        //ArrayList<Point> strokeList = new ArrayList<Point>();
+
+        // Define the array primitives. This is faster and will ultimately use
+        // less memory than array lists that can dynamically allocate memory.
+        public boolean[][] list;
+        public boolean[][] strokeList;
 
         /**
          * Implements run().
@@ -760,6 +767,17 @@ public class ColorGFX extends SurfaceView implements Runnable {
             // Define the bitmap width and height.
             int width = picture.getWidth();
             int height = picture.getHeight();
+
+            // Initialize the arrays according to the image metrics.
+            list = new boolean[width][height];
+            strokeList = new boolean[width][height];
+            for (boolean[] row: list) {
+              Arrays.fill(row, Boolean.FALSE);
+            }
+            for (boolean[] row: strokeList) {
+              Arrays.fill(row, Boolean.FALSE);
+            }
+
             // Define the target and replacement color.
             int target = targetColor;
             int replacement = replacementColor;
@@ -806,7 +824,7 @@ public class ColorGFX extends SurfaceView implements Runnable {
                         // Replace the current pixel color.
                         picture.setPixel(x, y, replacement);
                         // Add the pixel to the flood fill list.
-                        list.add(new Point(x, y));
+                        list[x][y] = true;
 
                         // If we don't take the stroke paths into consideration
                         // and color them where necessary, we WILL have reduced
@@ -816,22 +834,22 @@ public class ColorGFX extends SurfaceView implements Runnable {
                         // TOP
 
                         if (y + 1 < height - 1 && picture.getPixel(x, y + 1) != target) {
-                            strokeList.add(new Point(x, y + 1));
+                            strokeList[x][y + 1] = true;
                         }
 
                         // RIGHT
                         if (x + 1 < width - 1 && picture.getPixel(x + 1, y) != target) {
-                            strokeList.add(new Point(x + 1, y));
+                            strokeList[x + 1][y] = true;
                         }
 
                         // LEFT
                         if (x - 1 > 0 && picture.getPixel(x - 1, y) != target) {
-                            strokeList.add(new Point(x - 1, y));
+                            strokeList[x - 1][y] = true;
                         }
 
                         // BOTTOM
                         if (y - 1 > 0 && picture.getPixel(x, y - 1) != target) {
-                            strokeList.add(new Point(x, y - 1));
+                            strokeList[x][y - 1] = true;
                         }
 
                         // Add one SOUTH point to the queue if it is replaceable
