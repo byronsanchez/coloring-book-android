@@ -43,6 +43,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Environment;
 
 /**
  * Handles all database requests made by the application.
@@ -51,7 +52,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class NodeDatabase extends SQLiteOpenHelper {
 
     // Define the SQLite database location.
-    private static final String DATABASE_PATH = "/data/data/net.globide.coloring_book_08/databases/";
     private static final String DATABASE_NAME = "coloring_book.db";
 
     // Define the tables used in the application.
