@@ -516,8 +516,7 @@ public class ColorGFX extends SurfaceView implements Runnable {
                 int fillImageWidth = options.outWidth;
                 int fillImageHeight = options.outHeight;
                 // If the scale fails, we will need to use more memory to
-                // perform
-                // scaling for the layout to work on all size screens.
+                // perform scaling for the layout to work on all size screens.
                 boolean scaleFailed = false;
                 Bitmap paintMap = null;
                 float resizeRatioHeight = 1;
@@ -549,10 +548,8 @@ public class ColorGFX extends SurfaceView implements Runnable {
                 Bitmap picture = BitmapFactory.decodeResource(getResources(), resPaintId, options);
 
                 // If the scale failed, that means a scale was needed but didn't
-                // happen.
-                // We need to create a scaled copy of the image by allocating
-                // more
-                // memory.
+                // happen. We need to create a scaled copy of the image by allocating
+                // more memory.
                 if (scaleFailed) {
                     int newWidth = (int) (picture.getWidth() / resizeRatioHeight);
                     int newHeight = (int) (picture.getHeight() / resizeRatioHeight);
@@ -606,27 +603,17 @@ public class ColorGFX extends SurfaceView implements Runnable {
     }
 
     /**
-     * Colors all anti-aliasing pixels for a smooth fill.
-     */
-    public void colorStrokes(Bitmap picture, int replacementColor) {
-        for (int i=0; i < mStrokefillList.length; i++) {
-            for (int j=0; j < mStrokefillList[i].length; j++) {
-                if (mStrokefillList[i][j] != false) {
-                    // Color the current pixel with the selected color.
-                    picture.setPixel(i, j, replacementColor);
-                }
-            }
-        }
-    }
-
-    /**
      * Colors all pixels from the flood fill algorithm.
      */
     public void colorPixels(Bitmap picture, int replacementColor) {
+        // Both arrays are the same size, so just choose one to control the
+        // iteration.
         for (int i=0; i < mFloodfillList.length; i++) {
             for (int j=0; j < mFloodfillList[i].length; j++) {
                 if (mFloodfillList[i][j] != false) {
-                    // Color the current pixel with the selected color.
+                    picture.setPixel(i, j, replacementColor);
+                }
+                if (mStrokefillList[i][j] != false) {
                     picture.setPixel(i, j, replacementColor);
                 }
             }
@@ -697,7 +684,6 @@ public class ColorGFX extends SurfaceView implements Runnable {
                         // layer.
                         Bitmap fillPicture = Bitmap.createBitmap(imageWidth, imageHeight,
                                 Bitmap.Config.ARGB_8888);
-                        colorStrokes(fillPicture, replacementColor);
 
                         // Color the list of pixels generated from the flood
                         // fill algorithm.
@@ -754,12 +740,6 @@ public class ColorGFX extends SurfaceView implements Runnable {
             // Initialize the arrays according to the image metrics.
             list = new boolean[width][height];
             strokeList = new boolean[width][height];
-            for (boolean[] row: list) {
-              Arrays.fill(row, Boolean.FALSE);
-            }
-            for (boolean[] row: strokeList) {
-              Arrays.fill(row, Boolean.FALSE);
-            }
 
             // Define the target and replacement color.
             int target = targetColor;
