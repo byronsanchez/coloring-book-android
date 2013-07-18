@@ -11,6 +11,7 @@ PROJECT_DIR="."
 NUKE[0]="$PROJECT_DIR/res/drawable*/logo.png"
 NUKE[1]="$PROJECT_DIR/ic_launcher-web.png"
 NUKE[2]="$PROJECT_DIR/res/drawable*/ic_launcher.png"
+NUKE[3]="$PROJECT_DIR/res/drawable*/coloring-book-credits.png"
 
 ###########
 # FUNCTIONS
