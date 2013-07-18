@@ -68,9 +68,11 @@ function check_sanity {
 }
 
 function prepare_ShopActivity {
-  target="$PROJECT_DIR/src/net/globide/coloring_book_08/ShopActivity.java"
-  sub_string="s|String base64EncodedPublicKey = getKey();|String base64EncodedPublicKey = \"$BILLING_PUBLIC_KEY\";|g"
-  sed_file "$target" "$sub_string"
+  if [ ! -z "$BILLING_PUBLIC_KEY" ]; then
+    target="$PROJECT_DIR/src/net/globide/coloring_book_08/ShopActivity.java"
+    sub_string="s|String base64EncodedPublicKey = \"YOUR_BILL_KEY_HERE\";|String base64EncodedPublicKey = \"$BILLING_PUBLIC_KEY\";|g"
+    sed_file "$target" "$sub_string"
+  fi
 }
 
 function update_android_project {
