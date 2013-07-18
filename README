@@ -1,4 +1,4 @@
-        Coloring Book for Android v1.0 <http://chompix.com>
+        Coloring Book for Android v1.1.0 <http://chompix.com>
 
 This is the master repository of the "Coloring Book for Android" app.
 The submodule repositories can be found at the following locations:
@@ -20,7 +20,7 @@ INSTRUCTIONS
   
   For other versions of git, run:
   
-    https://github.com/byronsanchez/coloring-book-android.git
+    git clone https://github.com/byronsanchez/coloring-book-android.git
     cd coloring-book-android
     git submodule update --init
     assets/_scripts/build.sh all

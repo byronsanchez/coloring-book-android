@@ -3,7 +3,7 @@
     package="net.globide.coloring_book_08"
     android:versionCode="5"
     android:versionName="1.1.0"
-    android:installLocation="preferExternal" >
+    android:installLocation="auto" >
 
     <uses-sdk
         android:minSdkVersion="8"
