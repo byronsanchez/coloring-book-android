@@ -41,6 +41,8 @@ public class SplashActivity extends Activity {
     // Boolean to determine whether a thread should continue processing or if it
     // should stop.
     public boolean isThreadBroken = false;
+  
+    private NodeDatabase mDbNodeHelper = null;
 
     /**
      * Implements onCreate().
@@ -56,6 +58,11 @@ public class SplashActivity extends Activity {
 
         // Add default content.
         setContentView(R.layout.activity_splash);
+
+        // Probe the database in case an upgrade or installation is necessary.
+        mDbNodeHelper = new NodeDatabase((SplashActivity) this);
+        mDbNodeHelper.createDatabase();
+        mDbNodeHelper.close();
 
         isThreadBroken = false;
 
@@ -74,8 +81,11 @@ public class SplashActivity extends Activity {
 
                     // While the time elapsed is less than [_splashTime],
                     // continue executing sleep() in intervals of 100 ms.
-                    while (waited < mSplashTime) {
-                        
+                    // Also, if an upgrade task is in progress, we don't
+                    // want to go to the MainActivity, as it requires
+                    // database access to display its views.
+                    while (waited < mSplashTime || mDbNodeHelper.mIsUpgradeTaskInProgress) {
+
                         if (!isThreadBroken) {
                             sleep(100);
 

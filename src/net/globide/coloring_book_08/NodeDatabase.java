@@ -35,6 +35,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.AssetManager;
@@ -43,6 +44,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.AsyncTask;
 
 /**
  * Handles all database requests made by the application.
@@ -91,6 +93,10 @@ public class NodeDatabase extends SQLiteOpenHelper {
     private String mRightOperand;
     private String mOperator;
 
+    // A boolean signalling whether or not an upgrade task is in progress.
+    public boolean mIsUpgradeTaskInProgress = false;
+
+
     // Upon construction, pass the database information and set the context.
     public NodeDatabase(Context context) {
         super(context, DATABASE_NAME, null, SCHEMA_VERSION);
@@ -118,7 +124,7 @@ public class NodeDatabase extends SQLiteOpenHelper {
             mOurDatabase = getWritableDatabase();
 
             // Run all available changescripts.
-            runUpdates("0000");
+            new DBUpgradeTask(mOurDatabase).execute("0000");
         }
         else {
             // If the database exists, just call it for use.
@@ -132,98 +138,6 @@ public class NodeDatabase extends SQLiteOpenHelper {
     private boolean DBExists() {
         File dbFile = mOurContext.getDatabasePath(DATABASE_NAME);
         return dbFile.exists();
-    }
-
-    /**
-     * Runs updates from the specified script ID and all subsequent available
-     * updates.
-     */
-    private void runUpdates( String recentScriptID ) {
-      // Signal a fresh install if the database is being created from scratch.
-        boolean isFreshInstall = false;
-        if (recentScriptID.equals("0000")) {
-            isFreshInstall = true;
-        }
-
-        // Get a list of all database scripts from the assets directory.
-        String[] fileList = null;
-        try {
-            fileList = mOurContext.getAssets().list("database");
-        } catch ( IOException ioe ) {
-            fileList = new String[] {};
-        }
-
-        for (int i = 0; i < fileList.length; i++) {
-            String fileString = fileList[i];
-            String scriptIDString = extractStringFromScript( fileString, "point_release_number" );
-
-            // If the current iteration scriptID is less than the most recently
-            // applied update, skip to the next iteration.
-            // Ignore this check for fresh installs, as all scripts will run in
-            // in that case.
-            if (!isFreshInstall && scriptIDString.compareTo(recentScriptID) <= 0) {
-              continue;
-            }
-            applyScript( fileString );
-
-            // This is what happens when you don't think ahead. Now we have to
-            // skip logging directly to the database for the first 3
-            // changescripts, because the schema table is first introduced in
-            // the third changescript. The third changescript also
-            // retroactively logs all previous change scripts.
-            if (scriptIDString.compareTo("0003") <= 0) {
-              continue;
-            }
-
-            // Update the Schema Change Log.
-
-            // Prepare the data to insert.
-            String major_release_number = extractStringFromScript( fileString, "major_release_number" );
-            String minor_release_number = extractStringFromScript( fileString, "minor_release_number" );
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Date now = new Date();
-            String date_applied = sdf.format(now);
-            
-            // Create the new values
-            ContentValues cv;
-            cv = new ContentValues();
-            cv.put(KEY_SCHEMA_MAJOR_RELEASE_NUMBER, major_release_number);
-            cv.put(KEY_SCHEMA_MINOR_RELEASE_NUMBER, minor_release_number);
-            cv.put(KEY_SCHEMA_POINT_RELEASE_NUMBER, scriptIDString);
-            cv.put(KEY_SCHEMA_SCRIPT_NAME, fileString);
-            cv.put(KEY_SCHEMA_DATE_APPLIED, date_applied);
-
-            // Execute a simple update query using the nid as the WHERE clause
-            mOurDatabase.insert(DATABASE_TABLE_SCHEMA, null, cv);
-        }
-    }
-
-    /**
-     * Applies a change-script to the database.
-     */
-    private void applyScript( String script ) {
-        String[] items = null;
-        try {
-            BufferedReader reader = new BufferedReader( new InputStreamReader( mOurContext.getAssets().open( "database/" + script, AssetManager.ACCESS_STREAMING ) ) );
-
-            StringBuffer sql = new StringBuffer();
-            String line = null;
-            while ( ( line = reader.readLine() ) != null ) {
-                sql.append( line );
-                sql.append( "\n" );
-            }
-            // split the ddl file by semi-colons anchored to the end of line.
-            Pattern myPattern = Pattern.compile(";$", Pattern.MULTILINE);
-            items = myPattern.split(sql.toString());
-        } catch ( IOException ioe ) {
-            items = new String[] {};
-        }
-
-        for ( String item : items ) {
-            if ( item.trim().length() != 0 ) {
-                mOurDatabase.execSQL( item + ";" );
-            }
-        }
     }
 
     /**
@@ -599,7 +513,7 @@ public class NodeDatabase extends SQLiteOpenHelper {
         boolean tableExists = doesTableExist("schema");
         if (!tableExists) {
             // most recent script == sc.01.00.0002
-            runUpdates( "0002" );
+            new DBUpgradeTask(mOurDatabase).execute("0002");
         }
         else {
             // Define an array of columns to SELECT.
@@ -621,7 +535,7 @@ public class NodeDatabase extends SQLiteOpenHelper {
                 // Close the cursor.
                 c.close();
 
-                runUpdates( recentScriptID );
+                new DBUpgradeTask(mOurDatabase).execute( recentScriptID );
             }
         }
         // The API is going to try and close a transaction, so let's start one
@@ -629,5 +543,169 @@ public class NodeDatabase extends SQLiteOpenHelper {
         // consistent DDL files.
         db.beginTransaction();
         mOurDatabase = null;
+    }
+
+    /**
+     * Checks to see whether the database is being accessed asynchronously and
+     * if so, does NOT close the database.
+     *
+     * This will then allow the asynchronous task to close the database itself.
+     * If the database is not being accessed asynchronously, closes the
+     * database.
+     */
+    @Override
+    public synchronized void close() {
+        if (!mIsUpgradeTaskInProgress) {
+            super.close();
+        }
+    }
+
+    /**
+     * An asynchronous database updater.
+     *
+     * It closes the database when updates are done and displays a
+     * ProgressDialog to prevent interaction and attempts at using
+     * the database while simultaneously not blocking the main thread.
+     */
+
+    private class DBUpgradeTask extends AsyncTask<String, Void, Void> {
+
+        private ProgressDialog progressDialog;
+        private SQLiteDatabase mOurDatabase;
+
+        /**
+         * Constructor which sets the database-helper object reference.
+         */
+        public DBUpgradeTask(SQLiteDatabase db) {
+            this.mOurDatabase = db;
+        }
+
+        /**
+         * Displays the ProgressDialog and signals that an upgrade task is in
+         * progress.
+         */
+        @Override
+        protected void onPreExecute() {
+            mIsUpgradeTaskInProgress = true;
+            progressDialog = ProgressDialog.show(mOurContext, "Updating", "Applying new updates...", true, false);
+        }
+
+        /**
+         * Runs the updates starting from the script AFTER the one passed
+         * via the params argument.
+         */
+        @Override
+        protected Void doInBackground(String... params) {
+            // Run the database update.
+            runUpdates( params[0] );
+            return null;
+        }
+
+        /**
+         * Signals that the upgrade task is completed and dismisses the
+         * ProgressDialog.
+         */
+        @Override
+        protected void onPostExecute(Void result) {
+            // Hide the dialog.
+            mIsUpgradeTaskInProgress = false;
+            progressDialog.dismiss();
+        }
+
+
+        /**
+         * Runs updates from the specified script ID and all subsequent available
+         * updates.
+         */
+        private void runUpdates( String recentScriptID ) {
+          // Signal a fresh install if the database is being created from scratch.
+            boolean isFreshInstall = false;
+            if (recentScriptID.equals("0000")) {
+                isFreshInstall = true;
+            }
+
+            // Get a list of all database scripts from the assets directory.
+            String[] fileList = null;
+            try {
+                fileList = mOurContext.getAssets().list("database");
+            } catch ( IOException ioe ) {
+                fileList = new String[] {};
+            }
+
+            for (int i = 0; i < fileList.length; i++) {
+                String fileString = fileList[i];
+                String scriptIDString = extractStringFromScript( fileString, "point_release_number" );
+
+                // If the current iteration scriptID is less than the most recently
+                // applied update, skip to the next iteration.
+                // Ignore this check for fresh installs, as all scripts will run in
+                // in that case.
+                if (!isFreshInstall && scriptIDString.compareTo(recentScriptID) <= 0) {
+                  continue;
+                }
+                applyScript( fileString );
+
+                // This is what happens when you don't think ahead. Now we have to
+                // skip logging directly to the database for the first 3
+                // changescripts, because the schema table is first introduced in
+                // the third changescript. The third changescript also
+                // retroactively logs all previous change scripts.
+                if (scriptIDString.compareTo("0003") <= 0) {
+                  continue;
+                }
+
+                // Update the Schema Change Log.
+
+                // Prepare the data to insert.
+                String major_release_number = extractStringFromScript( fileString, "major_release_number" );
+                String minor_release_number = extractStringFromScript( fileString, "minor_release_number" );
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date now = new Date();
+                String date_applied = sdf.format(now);
+                
+                // Create the new values
+                ContentValues cv;
+                cv = new ContentValues();
+                cv.put(KEY_SCHEMA_MAJOR_RELEASE_NUMBER, major_release_number);
+                cv.put(KEY_SCHEMA_MINOR_RELEASE_NUMBER, minor_release_number);
+                cv.put(KEY_SCHEMA_POINT_RELEASE_NUMBER, scriptIDString);
+                cv.put(KEY_SCHEMA_SCRIPT_NAME, fileString);
+                cv.put(KEY_SCHEMA_DATE_APPLIED, date_applied);
+
+                // Execute a simple update query using the nid as the WHERE clause
+                mOurDatabase.insert(DATABASE_TABLE_SCHEMA, null, cv);
+            }
+
+            // Close the database now that updates are done.
+            mOurDatabase.close();
+        }
+
+        /**
+         * Applies a change-script to the database.
+         */
+        private void applyScript( String script ) {
+            String[] items = null;
+            try {
+                BufferedReader reader = new BufferedReader( new InputStreamReader( mOurContext.getAssets().open( "database/" + script, AssetManager.ACCESS_STREAMING ) ), 8192 );
+
+                StringBuffer sql = new StringBuffer();
+                String line = null;
+                while ( ( line = reader.readLine() ) != null ) {
+                    sql.append( line );
+                    sql.append( "\n" );
+                }
+                // split the ddl file by semi-colons anchored to the end of line.
+                Pattern myPattern = Pattern.compile(";$", Pattern.MULTILINE);
+                items = myPattern.split(sql.toString());
+            } catch ( IOException ioe ) {
+                items = new String[] {};
+            }
+
+            for ( String item : items ) {
+                if ( item.trim().length() != 0 ) {
+                    mOurDatabase.execSQL( item + ";" );
+                }
+            }
+        }
     }
 }
