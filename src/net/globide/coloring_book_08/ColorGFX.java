@@ -20,7 +20,7 @@
  */
 /*
  * NOTE: The Android Open Source Project holds the copyright to the
- * code ranging from lines 463-498. I hold the copyright to the rest
+ * code ranging from lines 451-486. I hold the copyright to the rest
  * of the code.
  *
  * For all code copyrighted by The Android Open Source Project, the
