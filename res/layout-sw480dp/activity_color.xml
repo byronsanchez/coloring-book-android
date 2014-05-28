@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rlColorGlobal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#00163b"
+    android:baselineAligned="false" >
+
+    <RelativeLayout
+        android:id="@+id/rlWrapperLeft"
+        android:layout_width="0dip"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:gravity="center_horizontal" >
+
+        <ImageButton
+            android:id="@+id/ibLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="6dp"
+            android:background="@null"
+            android:contentDescription="@string/ib_left_content_description"
+            android:src="@drawable/button_previous" />
+
+        <LinearLayout
+            android:id="@+id/llColorPaletteWrapperLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="horizontal"
+            android:padding="0dp" >
+
+            <LinearLayout
+                android:id="@+id/llColorPaletteLeft"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:orientation="vertical"
+                android:padding="0dp" >
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llColorPaletteLeft2"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:orientation="vertical"
+                android:padding="0dp" >
+            </LinearLayout>
+        </LinearLayout>
+
+        <ToggleButton
+            android:id="@+id/tbFillMode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="6dp"
+            android:background="@drawable/bucket_button"
+            android:textOff=""
+            android:textOn="" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlWrapperCenter"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:padding="0dp" >
+
+        <FrameLayout
+            android:id="@+id/flColorBody"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true" >
+        </FrameLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlWrapperRight"
+        android:layout_width="0dip"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:padding="0dp" >
+
+        <ImageButton
+            android:id="@+id/ibRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="6dp"
+            android:background="@null"
+            android:contentDescription="@string/ib_right_content_description"
+            android:src="@drawable/button_next" />
+
+        <LinearLayout
+            android:id="@+id/llColorPaletteWrapperRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="horizontal"
+            android:padding="0dp" >
+
+            <LinearLayout
+                android:id="@+id/llColorPaletteRight"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:orientation="vertical"
+                android:padding="0dp" >
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llColorPaletteRight2"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:orientation="vertical"
+                android:padding="0dp" >
+            </LinearLayout>
+        </LinearLayout>
+
+        <ToggleButton
+            android:id="@+id/tbEraseMode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="6dp"
+            android:background="@drawable/eraser_button"
+            android:textOff=""
+            android:textOn="" />
+    </RelativeLayout>
+
+</LinearLayout>

@@ -1,0 +1,154 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/llMain"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg" >
+
+    <RelativeLayout
+        android:id="@+id/rlMain"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/vector_background" >
+
+        <RelativeLayout
+            android:id="@+id/rlMainFloor"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true" >
+
+            <ImageView
+                android:id="@+id/ivMainFloor"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:background="@drawable/floor" >
+            </ImageView>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlMainTop"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <ImageView
+                android:id="@+id/ivMainTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="@null"
+                android:contentDescription="@string/iv_main_title_content_description"
+                android:paddingTop="24dp"
+                android:src="@drawable/main_title" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/llMainGlobal"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_below="@id/rlMainTop"
+            android:baselineAligned="false" >
+
+            <LinearLayout
+                android:id="@+id/rlMainInner1"
+                android:layout_width="0dip"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical" >
+
+                <RelativeLayout
+                    android:id="@+id/rlMainLeftWrapper"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent" >
+
+                    <RelativeLayout
+                        android:id="@+id/rlMainLeftTop"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" >
+
+                        <ImageButton
+                            android:id="@+id/ibPagerLeft"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:background="@null"
+                            android:clickable="false"
+                            android:contentDescription="@string/ib_pager_left_content_description"
+                            android:src="@drawable/button_previous_disabled" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rlMainLeft"
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_below="@id/rlMainLeftTop" >
+
+                        <ImageButton
+                            android:id="@+id/ibMainSettings"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:background="@null"
+                            android:contentDescription="@string/ib_main_settings_content_description"
+                            android:src="@drawable/button_settings" />
+                    </RelativeLayout>
+                </RelativeLayout>
+            </LinearLayout>
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/vpMain"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent" />
+
+            <LinearLayout
+                android:id="@+id/rlMainInner2"
+                android:layout_width="0dip"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical" >
+
+                <RelativeLayout
+                    android:id="@+id/rlMainRightWrapper"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent" >
+
+                    <RelativeLayout
+                        android:id="@+id/rlMainRightTop"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" >
+
+                        <ImageButton
+                            android:id="@+id/ibPagerRight"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:background="@null"
+                            android:clickable="false"
+                            android:contentDescription="@string/ib_pager_right_content_description"
+                            android:src="@drawable/button_next_disabled" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rlMainRight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_below="@id/rlMainRightTop" >
+
+                        <ImageButton
+                            android:id="@+id/ibMainHelp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:background="@null"
+                            android:contentDescription="@string/ib_main_help_content_description"
+                            android:src="@drawable/button_help" />
+                    </RelativeLayout>
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>

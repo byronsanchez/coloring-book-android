@@ -1,0 +1,18 @@
+#########
+# GENERAL
+#########
+
+# OS Files
+.DS_Store
+
+# vi/vim
+*~
+*.swp
+*.swo
+
+##################
+# PROJECT-SPECIFIC
+##################
+
+# Project file directory.
+/_pre_production

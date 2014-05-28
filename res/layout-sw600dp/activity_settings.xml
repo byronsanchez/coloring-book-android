@@ -1,0 +1,123 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/llSettings"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:background="#00163b" >
+
+    <TextView
+        android:id="@+id/tvSettingsLabel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="40dp"
+        android:gravity="center"
+        android:padding="15dp"
+        android:text="@string/tv_settings_label"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        android:textColor="#ffffff" />
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <LinearLayout
+            android:id="@+id/llSettingsScrollView"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+                <RelativeLayout
+                    android:id="@+id/rlSettingsScrollView1"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:paddingBottom="15dp"
+                    android:paddingTop="15dp" >
+
+                    <TextView
+                        android:id="@+id/tvSettingsMusicLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="60dp"
+                        android:text="@string/tv_settings_music_label"
+                        android:textSize="30sp"
+                        android:textColor="#ffffff" />
+
+                    <ToggleButton
+                        android:id="@+id/tbSettingsMusic"
+                        android:textOn=""
+                        android:textOff=""
+                        android:background="@drawable/music_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="60dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/llSettingsScrollView2"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:paddingBottom="15dp"
+                    android:paddingTop="15dp" >
+
+                    <TextView
+                        android:id="@+id/tvSettingsShopLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="60dp"
+                        android:text="@string/tv_settings_shop_label"
+                        android:textSize="30sp"
+                        android:textColor="#ffffff" />
+
+                    <ImageButton
+                        android:contentDescription="@string/ib_settings_shop_content_description"
+                        android:id="@+id/ibSettingsShop"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="60dp"
+                        android:background="@null"
+                        android:src="@drawable/button_next" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/llSettingsScrollView3"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:paddingBottom="15dp"
+                    android:paddingTop="15dp" >
+
+                    <TextView
+                        android:id="@+id/tvSettingsCreditsLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="60dp"
+                        android:text="@string/tv_settings_credits_label"
+                        android:textSize="30sp"
+                        android:textColor="#ffffff" />
+
+                    <ImageButton
+                        android:id="@+id/ibSettingsCredits"
+                        android:contentDescription="@string/ib_settings_credits_content_description"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="60dp"
+                        android:background="@null"
+                        android:src="@drawable/button_next" />
+                </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

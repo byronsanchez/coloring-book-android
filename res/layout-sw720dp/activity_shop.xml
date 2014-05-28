@@ -1,0 +1,84 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/llShop"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#00163b"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/tvShop"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="48dp"
+        android:gravity="center"
+        android:padding="18dp"
+        android:text="@string/tv_shop"
+        android:textColor="#ffffff"
+        android:textSize="48sp"
+        android:textStyle="bold" />
+
+    <RelativeLayout
+        android:id="@+id/rlShopProgress"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:paddingBottom="18dp"
+        android:paddingTop="18dp"
+        android:visibility="visible" >
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/svShop"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:visibility="gone" >
+
+        <LinearLayout
+            android:id="@+id/llShopScrollView"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/tvShopDescription"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="18dp"
+                android:text="@string/tv_shop_description"
+                android:textColor="#ffffff"
+                android:textSize="36sp"
+                android:textStyle="italic" />
+
+            <RelativeLayout
+                android:id="@+id/rlTemplate"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:paddingBottom="18dp"
+                android:paddingTop="18dp" >
+
+                <TextView
+                    android:id="@+id/tvTemplate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="72dp"
+                    android:text="@string/tv_shop_book_2_farm_animals_label"
+                    android:textColor="#ffffff"
+                    android:textSize="36sp" />
+
+                <ImageButton
+                    android:id="@+id/ibTemplate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="72dp"
+                    android:background="@drawable/button_shop"
+                    android:contentDescription="@string/ib_shop_book_2_farm_animals_content_description" />
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

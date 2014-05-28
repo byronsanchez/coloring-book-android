@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/svCreditsBody"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_margin="0dp"
+    android:background="#00163b"
+    android:fadingEdge="none"
+    android:padding="0dp"
+    android:scrollbars="none" >
+
+    <RelativeLayout
+        android:id="@+id/llCreditsBody"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="0dp"
+        android:padding="0dp" >
+    </RelativeLayout>
+
+</ScrollView>

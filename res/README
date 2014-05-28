@@ -1,0 +1,39 @@
+        coloring-book-resources-android r1.1.1 <http://chompix.com>
+
+This is the submodule repository containing resources used by
+"Coloring Book for Android."  The master repository can be found at:
+
+  http://github.com/byronsanchez/coloring-book-android
+
+STRUCTURE
+
+  The repository tree structure.
+
+    drawable/       - contains custom definitions for screen viewable
+                      elements.
+
+    drawable-*/     - contains images for various screen sizes and
+                      orientations.
+
+    layout*/        - contains activity xml files for various screen
+                      sizes. These xml files define the structure of
+                      the design for each activity.
+
+    raw/            - contains resources that are not screen-size or
+                      orientation specific.
+
+    values*/        - contains value definitions for different settings,
+                      strings, etc.
+
+LICENSE
+ 
+ The copyright and license terms for everything in this repository is
+ explained in detail in the following repository's COPYRIGHT file:
+
+   http://github.com/byronsanchez/coloring-book-android
+
+ Direct link:
+  
+   https://github.com/byronsanchez/coloring-book-android/blob/master/COPYRIGHT
+
+ Read the aforementioned COPYRIGHT file carefully.

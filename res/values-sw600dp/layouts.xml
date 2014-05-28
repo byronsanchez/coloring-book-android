@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <bool name="isTablet">true</bool>
+    <bool name="isSmall">false</bool>
+    <bool name="isNormal">true</bool>
+    <bool name="isLarge">false</bool>
+    <bool name="isExtraLarge">false</bool>
+</resources>

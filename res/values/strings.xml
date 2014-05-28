@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Coloring Book</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="ib_main_color_content_description">Button to navigate to the coloring book.</string>
+    <string name="tv_shop">Shop</string>
+    <string name="tv_shop_description">Each pack is a pay once unlimited use item.</string>
+    <string name="tv_settings_label">Settings</string>
+    <string name="ib_left_content_description">Button to go to the previous page.</string>
+    <string name="ib_right_content_description">Button to go to the next page.</string>
+    <string name="tv_shop_book_2_farm_animals_label">Farm Animals Pack</string>
+    <string name="ib_shop_book_2_farm_animals_content_description">Button to buy the "Farm Animals" coloring book.</string>
+    <string name="tv_settings_music_label">Music</string>
+    <string name="tv_settings_shop_label">Visit Shop</string>
+    <string name="ib_settings_shop_content_description">Button to navigate to the Shop screen.</string>
+    <string name="tv_settings_credits_label">View Credits</string>
+    <string name="ib_settings_credits_content_description">Button to navigate to the Credits screen.</string>
+    <string name="ib_main_settings_content_description">Button to navigate to the Settings screen.</string>
+    <string name="ib_main_help_content_description">Button to navigate to the Help Screen.</string>
+    <string name="ib_pager_left_content_description">Button to select the previous coloring book.</string>
+    <string name="ib_pager_right_content_description">Button to select the next coloring book.</string>
+    <string name="iv_main_title_content_description">Coloring Book</string>
+        <string name="tv_help"><![CDATA[<b>Main Menu</b> - Navigate through all available coloring books. Pick one to begin coloring.<br /><br />
+
+<b>Coloring Book Page</b> - Use the left or right arrows to navigate through the coloring pages.<br /><br />
+
+Toggle between <b>brush mode</b> and <b>fill-bucket mode</b> using the bottom left button.<br /><br />
+
+Use the <b>eraser</b> to erase colors.<br /><br />
+
+<b>Settings</b> - Turn music on/off, visit the shop, or view production credits.<br /><br />
+
+<b>Help</b> - View this help screen.]]></string>
+    
+</resources>
